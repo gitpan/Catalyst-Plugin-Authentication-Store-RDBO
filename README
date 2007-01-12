@@ -1,46 +1,60 @@
-Catalyst::Plugin::Authentication::Store::RDBO version 0.01
+NAME
+    Catalyst::Plugin::Authentication::Store::RDBO - Authentication and
+    authorization against a Rose::DB::Object model.
 
-[ REPLACE THIS...
+VERSION
+    This document describes Catalyst::Plugin::Authentication::Store::RDBO
+    version 0.002.
 
-  The README is used to introduce the module and provide instructions on
-  how to install the module, any machine dependencies it may have (for
-  example C compilers and installed libraries) and any other information
-  that should be understood before the module is installed.
+SYNOPSIS
+        use Catalyst;
 
-  A README file is required for CPAN modules since CPAN extracts the
-  README file from a module distribution so that people browsing the
-  archive can use it get an idea of the modules uses. It is usually a
-  good idea to provide version information here so that people can
-  decide whether fixes for the module are worth downloading.
-]
+        __PACKAGE__->setup(
+            qw(
+               Authentication
+               Authentication::Store::DBIC
+               Authentication::Credential::Password
+               Authorization::Roles
+              )
+        );
 
+        # Authentication
+        __PACKAGE__->config->{authentication}{rdbo} = {
+            user_class         => 'User',     # or 'MyApp::Model::User'
+            user_field         => 'username',
+            password_field     => 'password',
+            password_type      => 'hashed',   # or 'clear'
+            password_hash_type => 'SHA-1',
+        };
 
-INSTALLATION
+        # Authorization
+        __PACKAGE__->config->{authorization}{rdbo} = {
+            role_rel   => 'roles',  # name of the many-to-many relationship
+            role_field => 'name',
+        };
 
-To install this module, run the following commands:
+DESCRIPTION
+    This plugin uses a Rose::DB::Object object to authenticate an user. It
+    is based on Catalyst::Plugin::Authentication::Store::DBIC. Please read
+    there for a much better description.
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+DIFFERENCES
+    Currently only a single field for the "user_field" parameter is
+    supported. The DBIC plugin supports also an array reference. This can be
+    added in a future version.
 
-Alternatively, to install with Module::Build, you can use the
-following commands:
+    The default for "user_field" is "username" instead of "user".
 
-    perl Build.PL
-    ./Build
-    ./Build test
-    ./Build install
+    The configuration for authorization is much simpler, only two parameters
+    are needed. "role_rel" specifies the name of the many-to-many
+    relationship which connects user and role names. "role_field" is the
+    column accessor for the role name. (For
+    Catalyst::Plugin::Authorization::Roles roles are just strings.)
 
+AUTHOR
+    Uwe Voelker, <uwe.voelker@gmx.de>
 
-DEPENDENCIES
+COPYRIGHT
+    This module is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself. See "perldoc perlartistic".
 
-None.
-
-
-COPYRIGHT AND LICENSE
-
-Copyright (C) 2006, Uwe Voelker
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.

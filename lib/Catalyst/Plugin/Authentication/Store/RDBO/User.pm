@@ -1,5 +1,5 @@
 package Catalyst::Plugin::Authentication::Store::RDBO::User;
-$VERSION = 0.001;
+$VERSION = 0.002;
 
 use strict;
 use warnings;
@@ -33,8 +33,10 @@ sub new {
 sub obj {
     my ($self) = @_;
 
+    my $config = $self->{config};
+
     unless ($self->_obj) {
-        my %rose = ();
+        my %rose    = ();
         my $manager = $config->{auth}{manager_class};
 
         # no custom manager used
@@ -48,7 +50,7 @@ sub obj {
 
         my $user = $manager->get_objects(%rose);
 
-        $self->_obj($user[0]) if @$user;
+        $self->_obj($user->[0]) if @$user;
     }
 
     return $self->_obj;

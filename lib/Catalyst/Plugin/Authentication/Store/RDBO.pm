@@ -1,5 +1,5 @@
 package Catalyst::Plugin::Authentication::Store::RDBO;
-$VERSION = 0.001;
+$VERSION = 0.002;
 
 use strict;
 use warnings;
@@ -78,7 +78,7 @@ authorization against a Rose::DB::Object model.
 =head1 VERSION
 
 This document describes Catalyst::Plugin::Authentication::Store::RDBO
-version 0.001.
+version 0.002.
 
 
 =head1 SYNOPSIS
